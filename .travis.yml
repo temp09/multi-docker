@@ -1,0 +1,27 @@
+# Specify docker as dependency
+
+sudo: required
+services:
+  - docker
+
+# build test version of React project
+before_install:
+  - docker build -t amdad/react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run amdad/react-test npm test -- --coverage
+
+# build prod version of all projects
+after_success:
+  - docker build -t amdad/multi-client ./client
+  - docker build -t amdad/multi-nginx ./nginx
+  - docker build -t amdad/multi-server ./server
+  - docker build -t amdad/multi-worker ./worker
+
+# Login to the docker CLI
+  - echo "$DOCKER_PASSWORD" | docker login -u "DOCKER_ID" --password-stdin
+# Take those images and push them to docker hub
+  - docker push amdad/multi-client
+  - docker push amdad/multi-nginx
+  - docker push amdad/multi-server
+  - docker push amdad/multi-worker
