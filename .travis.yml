@@ -1,5 +1,5 @@
 # Specify docker as dependency
-
+language: generic
 sudo: required
 services:
   - docker
