@@ -19,7 +19,7 @@ after_success:
   - docker build -t temp09/multi-worker ./worker
 
 # Login to the docker CLI
-  - echo "$DOCKER_PASSWORD" | docker login -u "DOCKER_ID" --password-stdin
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_ID" --password-stdin
 # Take those images and push them to docker hub
   - docker push temp09/multi-client
   - docker push temp09/multi-nginx
